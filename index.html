@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2457d6">
+  <title>Anh Khoa - Toán 12 — Trợ thủ Toán học Toàn diện</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.1/math.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/algebrite/1.4.0/algebrite.bundle-for-browser.min.js"></script>
+  <style>
+    :root {
+      --primary: #2457d6;
+      --primary-hover: #1b45b0;
+      --primary-light: #eff4ff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --accent: #0ea5e9;
+      --success: #10b981;
+      --danger: #ef4444;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Keyframes Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a, var(--primary) 60%, #3b82f6);
+      color: #fff;
+      padding: 32px 20px 42px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 99px;
+      margin-bottom: 8px;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 650px;
+    }
+
+    /* Top Navigation Tabs */
+    .nav-bar {
+      margin-top: -24px;
+      padding: 0 16px;
+      position: sticky;
+      top: 10px;
+      z-index: 50;
+    }
+
+    .nav-wrapper {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 6px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07);
+    }
+
+    .nav-btn {
+      flex: 1;
+      min-width: 130px;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(36, 87, 214, 0.28);
+    }
+
+    .nav-btn:hover:not(.active) {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    main {
+      flex: 1;
+      padding: 22px 16px 40px;
+    }
+
+    .section-tab {
+      display: none;
+      animation: fadeIn 0.35s ease forwards;
+    }
+
+    .section-tab.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      transition: box-shadow 0.25s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(36, 87, 214, 0.07);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .card-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    /* Sub-tabs */
+    .subtabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .subtab {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .subtab.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Form & Input styles */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    label {
+      font-size: 0.88rem;
+      font-weight: 650;
+      color: var(--ink);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(36, 87, 214, 0.15);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 460px;
+      background: #fff;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 650;
+      color: var(--muted);
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    td input {
+      text-align: center;
+      padding: 8px 6px;
+      min-width: 75px;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-family: inherit;
+      font-weight: 650;
+      font-size: 0.92rem;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 18px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    button:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(36, 87, 214, 0.25);
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+    .btn-secondary:hover { background: #e0ecff; }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+    .btn-danger:hover { background: #fecaca; }
+
+    .btn-neutral {
+      background: #f1f5f9;
+      color: #475569;
+    }
+    .btn-neutral:hover { background: #e2e8f0; }
+
+    /* Result Displays */
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .result-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      animation: scaleIn 0.3s ease;
+      position: relative;
+    }
+
+    .result-card .title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .result-card .val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-top: 4px;
+      word-break: break-all;
+    }
+
+    .result-card .desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .detail-step {
+      border-left: 3px solid var(--primary);
+      padding: 10px 14px;
+      margin: 12px 0;
+      background: #f8fafc;
+      border-radius: 0 10px 10px 0;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .formula-box {
+      font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
+      background: #1e293b;
+      color: #38bdf8;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin: 8px 0;
+      font-size: 0.95rem;
+      overflow-x: auto;
+    }
+
+    .alert-box {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      margin: 12px 0;
+      display: none;
+      animation: scaleIn 0.2s ease;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    @media (max-width: 680px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .card { padding: 16px; border-radius: 12px; }
+      header { padding: 24px 16px 36px; }
+      .nav-btn { font-size: 0.85rem; padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <span class="badge">Toán Học Phổ Thông 12</span>
+    <h1>Máy Tính & Giải Toán Đa Năng</h1>
+    <p>Tích hợp thống kê số liệu ghép nhóm, đạo hàm, nguyên hàm — tích phân & hình học giải tích véctơ không gian.</p>
+  </div>
+</header>
+
+<div class="nav-bar">
+  <div class="container">
+    <div class="nav-wrapper">
+      <button class="nav-btn active" data-target="tab-stats">📊 Số Liệu Ghép Nhóm</button>
+      <button class="nav-btn" data-target="tab-calculus">⚡ Đạo Hàm & Tích Phân</button>
+      <button class="nav-btn" data-target="tab-vector">📐 Tọa Độ & Véctơ Oxyz</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+
+    <!-- ================= TAB 1: SỐ LIỆU GHÉP NHÓM ================= -->
+    <div id="tab-stats" class="section-tab active">
+      <div class="card">
+        <h2 class="card-title">1. Dữ liệu bảng tần số ghép nhóm</h2>
+        <p class="card-sub">Nhập cận nhóm và tần số theo chương trình Thống kê Toán 12.</p>
+        
+        <div class="subtabs">
+          <button class="subtab active" id="subtab-manual">Bảng Ghép Nhóm</button>
+          <button class="subtab" id="subtab-raw">Phân Nhóm Tự Động Từ Số Thô</button>
+        </div>
+
+        <div id="stats-manual-view">
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 50px;">#</th>
+                  <th>Cận dưới [a_i)</th>
+                  <th>Cận trên [b_i)</th>
+                  <th>Tần số (m_i)</th>
+                  <th style="width: 50px;">Xóa</th>
+                </tr>
+              </thead>
+              <tbody id="stats-rows">
+                <tr>
+                  <td class="idx">1</td>
+                  <td><input type="number" step="any" class="c-lower" value="10"></td>
+                  <td><input type="number" step="any" class="c-upper" value="20"></td>
+                  <td><input type="number" min="0" step="1" class="c-freq" value="4"></td>
+                  <td><button class="btn-danger btn-del" type="button">×</button></td>
+                </tr>
+                <tr>
+                  <td class="idx">2</td>
+                  <td><input type="number" step="any" class="c-lower" value="20"></td>
+                  <td><input type="number" step="any" class="c-upper" value="30"></td>
+                  <td><input type="number" min="0" step="1" class="c-freq" value="9"></td>
+                  <td><button class="btn-danger btn-del" type="button">×</button></td>
+                </tr>
+                <tr>
+                  <td class="idx">3</td>
+                  <td><input type="number" step="any" class="c-lower" value="30"></td>
+                  <td><input type="number" step="any" class="c-upper" value="40"></td>
+                  <td><input type="number" min="0" step="1" class="c-freq" value="15"></td>
+                  <td><button class="btn-danger btn-del" type="button">×</button></td>
+                </tr>
+                <tr>
+                  <td class="idx">4</td>
+                  <td><input type="number" step="any" class="c-lower" value="40"></td>
+                  <td><input type="number" step="any" class="c-upper" value="50"></td>
+                  <td><input type="number" min="0" step="1" class="c-freq" value="8"></td>
+                  <td><button class="btn-danger btn-del" type="button">×</button></td>
+                </tr>
+                <tr>
+                  <td class="idx">5</td>
+                  <td><input type="number" step="any" class="c-lower" value="50"></td>
+                  <td><input type="number" step="any" class="c-upper" value="60"></td>
+                  <td><input type="number" min="0" step="1" class="c-freq" value="4"></td>
+                  <td><button class="btn-danger btn-del" type="button">×</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="btn-group">
+            <button class="btn-secondary" id="btn-add-row" type="button">+ Thêm Hàng</button>
+            <button class="btn-neutral" id="btn-example-stats" type="button">Điền Mẫu</button>
+            <button class="btn-neutral" id="btn-clear-stats" type="button">Xóa Hết</button>
+          </div>
+        </div>
+
+        <div id="stats-raw-view" style="display: none;">
+          <div class="field">
+            <label>Dãy số liệu thô (cách nhau bởi khoảng trắng hoặc phẩy)</label>
+            <textarea id="raw-stats-input" rows="3" placeholder="Ví dụ: 12, 14, 18, 22, 25, 29, 32, 35, 38, 45, 52"></textarea>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label>Giá trị bắt đầu nhóm đầu</label>
+              <input type="number" id="raw-group-start" placeholder="Tự động (min)">
+            </div>
+            <div class="field">
+              <label>Độ dài mỗi nhóm (h)</label>
+              <input type="number" id="raw-group-step" placeholder="Mặc định: 10">
+            </div>
+          </div>
+          <button class="btn-secondary" id="btn-convert-raw" type="button">Tự Động Phân Nhóm</button>
+        </div>
+
+        <div id="stats-error" class="alert-box"></div>
+
+        <div style="margin-top: 20px;">
+          <button class="btn-primary" id="btn-calc-stats" type="button" style="padding: 12px 24px; font-size: 1rem;">
+            ⚡ Phân Tích & Tính Toán Đặc Trưng
+          </button>
+        </div>
+      </div>
+
+      <!-- Result Card for Stats -->
+      <div class="card" id="stats-output" style="display: none;">
+        <h2 class="card-title">Kết Quả Đặc Trưng Thống Kê</h2>
+        <div class="result-grid" id="stats-result-grid"></div>
+        <h3 style="margin: 24px 0 10px; font-size: 1.05rem;">Các Bước Giải Thích Chi Tiết</h3>
+        <div id="stats-steps"></div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 2: ĐẠO HÀM & TÍCH PHÂN ================= -->
+    <div id="tab-calculus" class="section-tab">
+      <div class="card">
+        <h2 class="card-title">2. Phân Tích Giải Tích (Đạo Hàm & Nguyên Hàm)</h2>
+        <p class="card-sub">Tính đạo hàm các cấp, tìm nguyên hàm tổng quát hoặc tích phân xác định theo biến $x$.</p>
+
+        <div class="field">
+          <label>Biểu thức hàm số f(x)</label>
+          <input type="text" id="calc-expr" placeholder="Ví dụ: 3*x^3 - 4*x^2 + 5*sin(x) - exp(2*x)" value="x^3 - 3*x^2 + 2">
+          <small style="color: var(--muted); font-size: 0.8rem;">Quy tắc: Dùng <code>*</code> để nhân (vd: <code>3*x</code>), lũy thừa <code>^</code>, căn bậc hai <code>sqrt(x)</code>, lượng giác <code>sin(x)</code>, <code>cos(x)</code>, e mũ <code>exp(x)</code>, ln <code>log(x)</code>.</small>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label>Cận dưới a (Dành cho tích phân xác định $\int_a^b$)</label>
+            <input type="text" id="calc-bound-a" placeholder="Tùy chọn: vd 0, -1, pi">
+          </div>
+          <div class="field">
+            <label>Cận trên b (Dành cho tích phân xác định $\int_a^b$)</label>
+            <input type="text" id="calc-bound-b" placeholder="Tùy chọn: vd 2, 5">
+          </div>
+        </div>
+
+        <div id="calc-error" class="alert-box"></div>
+
+        <div class="btn-group" style="margin-top: 14px;">
+          <button class="btn-primary" id="btn-calc-calculus" type="button">⚡ Tính Đạo Hàm & Nguyên Hàm</button>
+          <button class="btn-neutral" id="btn-sample-calculus" type="button">Mẫu Bài Tập</button>
+        </div>
+      </div>
+
+      <div class="card" id="calc-output" style="display: none;">
+        <h2 class="card-title">Kết Quả Phân Tích</h2>
+        <div class="result-grid" id="calc-grid"></div>
+        <div id="calc-details" style="margin-top: 20px;"></div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 3: HÌNH HỌC VÉCTƠ OXYZ ================= -->
+    <div id="tab-vector" class="section-tab">
+      <div class="card">
+        <h2 class="card-title">3. Hình Học Không Gian Oxyz & Véctơ</h2>
+        <p class="card-sub">Tính toán tích vô hướng, tích có hướng, độ dài, góc giữa hai véctơ và diện tích tam giác trong không gian 3 chiều.</p>
+
+        <div class="grid-2">
+          <div class="card" style="margin: 0; background: #fafcff;">
+            <strong style="color: var(--primary);">Véctơ vec{u} = (x_1, y_1, z_1)</strong>
+            <div class="grid-3" style="margin-top: 10px;">
+              <div class="field">
+                <label>x_1</label>
+                <input type="number" step="any" id="vec-u1" value="1">
+              </div>
+              <div class="field">
+                <label>y_1</label>
+                <input type="number" step="any" id="vec-u2" value="-2">
+              </div>
+              <div class="field">
+                <label>z_1</label>
+                <input type="number" step="any" id="vec-u3" value="2">
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin: 0; background: #fafcff;">
+            <strong style="color: var(--primary);">Véctơ vec{v} = (x_2, y_2, z_2)</strong>
+            <div class="grid-3" style="margin-top: 10px;">
+              <div class="field">
+                <label>x_2</label>
+                <input type="number" step="any" id="vec-v1" value="3">
+              </div>
+              <div class="field">
+                <label>y_2</label>
+                <input type="number" step="any" id="vec-v2" value="0">
+              </div>
+              <div class="field">
+                <label>z_2</label>
+                <input type="number" step="any" id="vec-v3" value="4">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="vec-error" class="alert-box" style="margin-top: 15px;"></div>
+
+        <div class="btn-group" style="margin-top: 18px;">
+          <button class="btn-primary" id="btn-calc-vector" type="button">⚡ Tính Toán Véctơ Toàn Diện</button>
+          <button class="btn-neutral" id="btn-reset-vector" type="button">Khôi Phục Mặc Định</button>
+        </div>
+      </div>
+
+      <div class="card" id="vector-output" style="display: none;">
+        <h2 class="card-title">Kết Quả Véctơ & Ứng Dụng Không Gian</h2>
+        <div class="result-grid" id="vector-grid"></div>
+        <div id="vector-details" style="margin-top: 20px;"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  Toán 12 Toolbox · Tích hợp thuật toán CAS chạy độc lập trên trình duyệt.
+  <a href="https://phamsangday.id.vn/N" target="_blank" style="color: var(--primary); text-decoration: underline;">Về trang chủ</a>
+</footer>
+
+<script>
+  /* ================= NAVIGATION TABS ================= */
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const sections = document.querySelectorAll('.section-tab');
+
+  navBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      navBtns.forEach(b => b.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      const target = document.getElementById(btn.dataset.target);
+      if (target) target.classList.add('active');
+    });
+  });
+
+  /* ================= 1. SỐ LIỆU GHÉP NHÓM ================= */
+  const subtabManual = document.getElementById('subtab-manual');
+  const subtabRaw = document.getElementById('subtab-raw');
+  const manualView = document.getElementById('stats-manual-view');
+  const rawView = document.getElementById('stats-raw-view');
+  const statsRows = document.getElementById('stats-rows');
+  const statsError = document.getElementById('stats-error');
+  const statsOutput = document.getElementById('stats-output');
+  const statsResultGrid = document.getElementById('stats-result-grid');
+  const statsSteps = document.getElementById('stats-steps');
+
+  subtabManual.addEventListener('click', () => {
+    subtabManual.classList.add('active');
+    subtabRaw.classList.remove('active');
+    manualView.style.display = 'block';
+    rawView.style.display = 'none';
+  });
+
+  subtabRaw.addEventListener('click', () => {
+    subtabRaw.classList.add('active');
+    subtabManual.classList.remove('active');
+    rawView.style.display = 'block';
+    manualView.style.display = 'none';
+  });
+
+  function updateRowIndices() {
+    statsRows.querySelectorAll('tr').forEach((r, i) => {
+      r.querySelector('.idx').textContent = i + 1;
+    });
+  }
+
+  function addStatsRow(lower = '', upper = '', freq = '') {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="idx"></td>
+      <td><input type="number" step="any" class="c-lower" value="${lower}"></td>
+      <td><input type="number" step="any" class="c-upper" value="${upper}"></td>
+      <td><input type="number" min="0" step="1" class="c-freq" value="${freq}"></td>
+      <td><button class="btn-danger btn-del" type="button">×</button></td>
+    `;
+    statsRows.appendChild(tr);
+    updateRowIndices();
+  }
+
+  statsRows.addEventListener('click', e => {
+    if (e.target.classList.contains('btn-del')) {
+      if (statsRows.querySelectorAll('tr').length > 1) {
+        e.target.closest('tr').remove();
+        updateRowIndices();
+      } else {
+        showStatsError('Cần tối thiểu 1 nhóm dữ liệu.');
+      }
+    }
+  });
+
+  document.getElementById('btn-add-row').addEventListener('click', () => {
+    const rows = statsRows.querySelectorAll('tr');
+    let lastUpper = '';
+    if (rows.length > 0) {
+      const val = rows[rows.length - 1].querySelector('.c-upper').value;
+      if (val !== '') lastUpper = parseFloat(val);
+    }
+    addStatsRow(lastUpper !== '' ? lastUpper : '', lastUpper !== '' ? lastUpper + 10 : '', 0);
+  });
+
+  document.getElementById('btn-clear-stats').addEventListener('click', () => {
+    statsRows.innerHTML = '';
+    addStatsRow('', '', '');
+  });
+
+  document.getElementById('btn-example-stats').addEventListener('click', () => {
+    statsRows.innerHTML = '';
+    [[10, 20, 4], [20, 30, 9], [30, 40, 15], [40, 50, 8], [50, 60, 4]].forEach(r => addStatsRow(r[0], r[1], r[2]));
+  });
+
+  document.getElementById('btn-convert-raw').addEventListener('click', () => {
+    const raw = document.getElementById('raw-stats-input').value;
+    const nums = raw.split(/[\s,;\n]+/).map(Number).filter(n => !isNaN(n)).sort((a,b) => a - b);
+    if (!nums.length) {
+      showStatsError('Vui lòng nhập ít nhất một con số hợp lệ.');
+      return;
+    }
+    const min = nums[0];
+    const max = nums[nums.length - 1];
+    let start = parseFloat(document.getElementById('raw-group-start').value);
+    if (isNaN(start)) start = Math.floor(min);
+    let step = parseFloat(document.getElementById('raw-group-step').value);
+    if (isNaN(step) || step <= 0) {
+      const k = Math.ceil(1 + 3.322 * Math.log10(nums.length)) || 5;
+      step = Math.ceil((max - start) / k) || 10;
+    }
+
+    statsRows.innerHTML = '';
+    let cur = start;
+    while (cur < max || cur === start) {
+      const next = cur + step;
+      const count = nums.filter(x => (x >= cur && (next >= max ? x <= next : x < next))).length;
+      addStatsRow(cur, next, count);
+      cur = next;
+    }
+    subtabManual.click();
+    showStatsError('');
+  });
+
+  function showStatsError(msg) {
+    if (!msg) {
+      statsError.style.display = 'none';
+      statsError.textContent = '';
+    } else {
+      statsError.style.display = 'block';
+      statsError.textContent = msg;
+    }
+  }
+
+  function roundN(val, d = 4) {
+    if (isNaN(val) || val === null) return '—';
+    return Number(Math.round(val + 'e' + d) + 'e-' + d);
+  }
+
+  document.getElementById('btn-calc-stats').addEventListener('click', () => {
+    showStatsError('');
+    const rows = statsRows.querySelectorAll('tr');
+    const items = [];
+    let prevUp = null;
+
+    for (let i = 0; i < rows.length; i++) {
+      const a = parseFloat(rows[i].querySelector('.c-lower').value);
+      const b = parseFloat(rows[i].querySelector('.c-upper').value);
+      const f = parseFloat(rows[i].querySelector('.c-freq').value);
+
+      if (isNaN(a) || isNaN(b) || isNaN(f)) {
+        showStatsError(`Dòng ${i + 1}: Vui lòng điền đủ cận dưới, cận trên và tần số.`);
+        return;
+      }
+      if (a >= b) {
+        showStatsError(`Dòng ${i + 1}: Cận dưới (${a}) phải nhỏ hơn cận trên (${b}).`);
+        return;
+      }
+      if (f < 0) {
+        showStatsError(`Dòng ${i + 1}: Tần số phải là số không âm.`);
+        return;
+      }
+      if (prevUp !== null && a < prevUp) {
+        showStatsError(`Dòng ${i + 1}: Khoảng [${a}, ${b}) bị chồng lấn.`);
+        return;
+      }
+      prevUp = b;
+      items.push({ id: i + 1, a, b, mid: (a + b) / 2, f, h: b - a });
+    }
+
+    const n = items.reduce((s, it) => s + it.f, 0);
+    if (n <= 0) {
+      showStatsError('Tổng cỡ mẫu (n) phải lớn hơn 0.');
+      return;
+    }
+
+    let cum = 0;
+    items.forEach(it => { cum += it.f; it.cf = cum; });
+
+    // Mean
+    const sumFx = items.reduce((s, it) => s + it.f * it.mid, 0);
+    const mean = sumFx / n;
+
+    // Variance & Std
+    const sumFx2 = items.reduce((s, it) => s + it.f * Math.pow(it.mid, 2), 0);
+    const variance = (sumFx2 / n) - Math.pow(mean, 2);
+    const stdDev = Math.sqrt(Math.max(0, variance));
+
+    // Quantiles
+    function findQ(val) {
+      const idx = items.findIndex(it => it.cf >= val);
+      const g = items[idx];
+      const prevCf = idx > 0 ? items[idx - 1].cf : 0;
+      const res = g.a + ((val - prevCf) / g.f) * g.h;
+      return { val: res, group: g, prevCf, f: g.f, h: g.h };
+    }
+
+    const q1 = findQ(n / 4);
+    const q2 = findQ(n / 2);
+    const q3 = findQ(3 * n / 4);
+    const deltaQ = q3.val - q1.val;
+
+    // Mode
+    let maxFreq = -1;
+    let modeIdx = 0;
+    items.forEach((it, i) => {
+      if (it.f > maxFreq) { maxFreq = it.f; modeIdx = i; }
+    });
+    const mg = items[modeIdx];
+    const prevF = modeIdx > 0 ? items[modeIdx - 1].f : 0;
+    const nextF = modeIdx < items.length - 1 ? items[modeIdx + 1].f : 0;
+    const denom = (mg.f - prevF) + (mg.f - nextF);
+    const mode = denom !== 0 ? mg.a + ((mg.f - prevF) / denom) * mg.h : mg.mid;
+
+    // Output render
+    const results = [
+      { t: 'Cỡ Mẫu (n)', v: n, d: 'n = Σfᵢ' },
+      { t: 'Số Trung Bình (x̄)', v: roundN(mean), d: 'x̄ = (Σ fᵢxᵢ) / n' },
+      { t: 'Phương Sai (s²)', v: roundN(variance), d: 's² = (Σ fᵢxᵢ²)/n − x̄²' },
+      { t: 'Độ Lệch Chuẩn (s)', v: roundN(stdDev), d: 's = √s²' },
+      { t: 'Tứ Phân Vị Q₁', v: roundN(q1.val), d: `Vị trí n/4 = ${n/4}` },
+      { t: 'Trung Vị Q₂', v: roundN(q2.val), d: `Vị trí n/2 = ${n/2}` },
+      { t: 'Tứ Phân Vị Q₃', v: roundN(q3.val), d: `Vị trí 3n/4 = ${3*n/4}` },
+      { t: 'Khoảng Tứ Phân Vị ΔQ', v: roundN(deltaQ), d: 'ΔQ = Q₃ − Q₁' },
+      { t: 'Mốt (Mₒ)', v: roundN(mode), d: `Nhóm mốt [${mg.a}; ${mg.b})` }
+    ];
+
+    statsResultGrid.innerHTML = results.map(r => `
+      <div class="result-card">
+        <div class="title">${r.t}</div>
+        <div class="val">${r.v}</div>
+        <div class="desc">${r.d}</div>
+      </div>
+    `).join('');
+
+    statsSteps.innerHTML = `
+      <div class="detail-step">
+        <strong>1. Bảng giá trị đại diện & Số trung bình</strong>
+        <div class="formula-box">${items.map(it => `[${it.a}, ${it.b}): x = ${it.mid}, f = ${it.f} → f·x = ${roundN(it.f*it.mid)}`).join('\n')}</div>
+        <p>x̄ = ${roundN(sumFx)} / ${n} = <strong>${roundN(mean)}</strong></p>
+      </div>
+      <div class="detail-step">
+        <strong>2. Phương sai và độ lệch chuẩn</strong>
+        <p>Σ fᵢxᵢ² = ${roundN(sumFx2)}</p>
+        <p>s² = (${roundN(sumFx2)} / ${n}) − (${roundN(mean)})² = <strong>${roundN(variance)}</strong></p>
+        <p>s = √(${roundN(variance)}) = <strong>${roundN(stdDev)}</strong></p>
+      </div>
+      <div class="detail-step">
+        <strong>3. Tứ phân vị</strong>
+        <p>• Q₁ (nhóm [${q1.group.a}, ${q1.group.b})): Q₁ = ${q1.group.a} + ${q1.h} · (${n/4} - ${q1.prevCf}) / ${q1.f} = <strong>${roundN(q1.val)}</strong></p>
+        <p>• Q₂ (nhóm [${q2.group.a}, ${q2.group.b})): Q₂ = ${q2.group.a} + ${q2.h} · (${n/2} - ${q2.prevCf}) / ${q2.f} = <strong>${roundN(q2.val)}</strong></p>
+        <p>• Q₃ (nhóm [${q3.group.a}, ${q3.group.b})): Q₃ = ${q3.group.a} + ${q3.h} · (${3*n/4} - ${q3.prevCf}) / ${q3.f} = <strong>${roundN(q3.val)}</strong></p>
+      </div>
+    `;
+
+    statsOutput.style.display = 'block';
+    statsOutput.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  /* ================= 2. ĐẠO HÀM & TÍCH PHÂN ================= */
+  const calcError = document.getElementById('calc-error');
+  const calcOutput = document.getElementById('calc-output');
+  const calcGrid = document.getElementById('calc-grid');
+  const calcDetails = document.getElementById('calc-details');
+
+  document.getElementById('btn-sample-calculus').addEventListener('click', () => {
+    document.getElementById('calc-expr').value = 'x^3 - 3*x^2 + 2*sin(x)';
+    document.getElementById('calc-bound-a').value = '0';
+    document.getElementById('calc-bound-b').value = '2';
+  });
+
+  document.getElementById('btn-calc-calculus').addEventListener('click', () => {
+    calcError.style.display = 'none';
+    const rawExpr = document.getElementById('calc-expr').value.trim();
+    const boundA = document.getElementById('calc-bound-a').value.trim();
+    const boundB = document.getElementById('calc-bound-b').value.trim();
+
+    if (!rawExpr) {
+      calcError.style.display = 'block';
+      calcError.textContent = 'Vui lòng nhập biểu thức hàm số f(x).';
+      return;
+    }
+
+    try {
+      // 1. First & Second Derivative using Math.js
+      const parsedNode = math.parse(rawExpr);
+      const d1 = math.derivative(parsedNode, 'x').toString();
+      const d2 = math.derivative(d1, 'x').toString();
+
+      // 2. Symbolic Integration using Algebrite
+      let integralSym = '';
+      try {
+        integralSym = Algebrite.integral(Algebrite.eval(rawExpr)).toString();
+      } catch (e) {
+        integralSym = 'Không tìm thấy nguyên hàm giải tích sơ cấp';
+      }
+
+      // 3. Definite Integral (Numerical Simpson's rule if bounds present)
+      let definiteVal = null;
+      let hasDefinite = false;
+      if (boundA !== '' && boundB !== '') {
+        try {
+          const aVal = math.evaluate(boundA);
+          const bVal = math.evaluate(boundB);
+          const compiled = parsedNode.compile();
+
+          // Simpson's 1/3 rule for numerical approximation
+          const N = 1000;
+          const h = (bVal - aVal) / N;
+          let sum = compiled.evaluate({ x: aVal }) + compiled.evaluate({ x: bVal });
+          for (let i = 1; i < N; i++) {
+            const xVal = aVal + i * h;
+            const y = compiled.evaluate({ x: xVal });
+            sum += (i % 2 === 0 ? 2 : 4) * y;
+          }
+          definiteVal = roundN((h / 3) * sum, 5);
+          hasDefinite = true;
+        } catch (e) {
+          hasDefinite = false;
+        }
+      }
+
+      const cards = [
+        { t: "Hàm Gốc f(x)", v: rawExpr, d: "Hàm số biến số x" },
+        { t: "Đạo Hàm Cấp 1 f'(x)", v: d1, d: "Đạo hàm theo quy tắc" },
+        { t: "Đạo Hàm Cấp 2 f''(x)", v: d2, d: "Đạo hàm của f'(x)" },
+        { t: "Nguyên Hàm ∫ f(x) dx", v: integralSym + ' + C', d: "Họ nguyên hàm đại số" }
+      ];
+
+      if (hasDefinite) {
+        cards.push({
+          t: `Tích Phân ∫ từ ${boundA} đến ${boundB}`,
+          v: definiteVal,
+          d: "Xấp xỉ tích phân xác định"
+        });
+      }
+
+      calcGrid.innerHTML = cards.map(c => `
+        <div class="result-card">
+          <div class="title">${c.t}</div>
+          <div class="val" style="font-size: 1.15rem;">${c.v}</div>
+          <div class="desc">${c.d}</div>
+        </div>
+      `).join('');
+
+      calcDetails.innerHTML = `
+        <div class="detail-step">
+          <strong>Biểu thức hiển thị chi tiết:</strong>
+          <div class="formula-box">f(x)   = ${rawExpr}\nf'(x)  = ${d1}\nf''(x) = ${d2}\n∫f(x)dx = ${integralSym} + C</div>
+        </div>
+      `;
+
+      calcOutput.style.display = 'block';
+      calcOutput.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (err) {
+      calcError.style.display = 'block';
+      calcError.textContent = 'Lỗi cú pháp biểu thức toán học: ' + err.message;
+    }
+  });
+
+  /* ================= 3. HÌNH HỌC VÉCTƠ OXYZ ================= */
+  const vecError = document.getElementById('vec-error');
+  const vectorOutput = document.getElementById('vector-output');
+  const vectorGrid = document.getElementById('vector-grid');
+  const vectorDetails = document.getElementById('vector-details');
+
+  document.getElementById('btn-reset-vector').addEventListener('click', () => {
+    document.getElementById('vec-u1').value = '1';
+    document.getElementById('vec-u2').value = '-2';
+    document.getElementById('vec-u3').value = '2';
+    document.getElementById('vec-v1').value = '3';
+    document.getElementById('vec-v2').value = '0';
+    document.getElementById('vec-v3').value = '4';
+  });
+
+  document.getElementById('btn-calc-vector').addEventListener('click', () => {
+    vecError.style.display = 'none';
+
+    const u1 = parseFloat(document.getElementById('vec-u1').value);
+    const u2 = parseFloat(document.getElementById('vec-u2').value);
+    const u3 = parseFloat(document.getElementById('vec-u3').value);
+
+    const v1 = parseFloat(document.getElementById('vec-v1').value);
+    const v2 = parseFloat(document.getElementById('vec-v2').value);
+    const v3 = parseFloat(document.getElementById('vec-v3').value);
+
+    if ([u1, u2, u3, v1, v2, v3].some(isNaN)) {
+      vecError.style.display = 'block';
+      vecError.textContent = 'Vui lòng nhập đầy đủ các tọa độ hợp lệ.';
+      return;
+    }
+
+    const u = [u1, u2, u3];
+    const v = [v1, v2, v3];
+
+    // Magnitude
+    const magU = Math.sqrt(u1*u1 + u2*u2 + u3*u3);
+    const magV = Math.sqrt(v1*v1 + v2*v2 + v3*v3);
+
+    // Sum & Difference
+    const sumVec = [u1 + v1, u2 + v2, u3 + v3];
+    const diffVec = [u1 - v1, u2 - v2, u3 - v3];
+
+    // Dot product
+    const dotProduct = u1 * v1 + u2 * v2 + u3 * v3;
+
+    // Cross product: [u2*v3 - u3*v2, u3*v1 - u1*v3, u1*v2 - u2*v1]
+    const crossProduct = [
+      u2 * v3 - u3 * v2,
+      u3 * v1 - u1 * v3,
+      u1 * v2 - u2 * v1
+    ];
+    const magCross = Math.sqrt(crossProduct[0]**2 + crossProduct[1]**2 + crossProduct[2]**2);
+
+    // Angle
+    let angleRad = 0;
+    let angleDeg = 0;
+    if (magU > 0 && magV > 0) {
+      const cosTheta = Math.max(-1, Math.min(1, dotProduct / (magU * magV)));
+      angleRad = Math.acos(cosTheta);
+      angleDeg = (angleRad * 180) / Math.PI;
+    }
+
+    // Geometry application: Area of Triangle formed by u and v
+    const triArea = magCross / 2;
+
+    const cards = [
+      { t: "Độ dài |u|", v: roundN(magU), d: `|u| = √(${u1}² + ${u2}² + ${u3}²)` },
+      { t: "Độ dài |v|", v: roundN(magV), d: `|v| = √(${v1}² + ${v2}² + ${v3}²)` },
+      { t: "Tích vô hướng u · v", v: roundN(dotProduct), d: "u·v = x₁x₂ + y₁y₂ + z₁z₂" },
+      { t: "Góc (u, v)", v: `${roundN(angleDeg, 2)}°`, d: `cos = ${roundN(dotProduct/(magU*magV))}` },
+      { t: "Tích có hướng [u, v]", v: `(${crossProduct.join(', ')})`, d: "Véctơ trực giao với u và v" },
+      { t: "Diện tích Δ tạo bởi u, v", v: roundN(triArea), d: "S = 1/2 · |[u, v]|" }
+    ];
+
+    vectorGrid.innerHTML = cards.map(c => `
+      <div class="result-card">
+        <div class="title">${c.t}</div>
+        <div class="val" style="font-size: 1.25rem;">${c.v}</div>
+        <div class="desc">${c.d}</div>
+      </div>
+    `).join('');
+
+    vectorDetails.innerHTML = `
+      <div class="detail-step">
+        <strong>Phép toán véctơ chi tiết:</strong>
+        <div class="formula-box">Tổng u + v          = (${sumVec.join(', ')})\nHiệu u - v          = (${diffVec.join(', ')})\nTích có hướng [u, v] = (${crossProduct.join(', ')})\nĐộ dài |[u, v]|       = ${roundN(magCross)}</div>
+        <p>• Hai véctơ ${dotProduct === 0 ? '<strong style="color:var(--success)">vuông góc với nhau</strong>' : 'không vuông góc với nhau'}.</p>
+        <p>• Hai véctơ ${magCross === 0 ? '<strong style="color:var(--primary)">cùng phương</strong>' : 'không cùng phương'}.</p>
+      </div>
+    `;
+
+    vectorOutput.style.display = 'block';
+    vectorOutput.scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a48e8a84cfed852c',t:'MTc5MTcyODc5OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"5c125db2b7054358a3f0abaa92e97d58","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
